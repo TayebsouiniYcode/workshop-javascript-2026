@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Starter du workshop JavaScript TeamManager">
+  <title>TeamManager — Gestion des employés</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca'
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+  <header class="border-b border-slate-200 bg-white">
+    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+      <div>
+        <p class="mb-1 text-sm font-semibold uppercase tracking-widest text-brand-600">YouCode · Workshop JavaScript</p>
+        <h1 class="text-3xl font-bold tracking-tight">TeamManager</h1>
+        <p class="mt-1 text-sm text-slate-500">Tableau de bord des ressources humaines</p>
+      </div>
+      <a href="#employee-form" class="inline-flex items-center justify-center rounded-lg bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+        + Ajouter un employé
+      </a>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+    <!-- Les apprenants mettront à jour ces valeurs avec JavaScript. -->
+    <section aria-labelledby="stats-title">
+      <div class="mb-4 flex items-end justify-between">
+        <div>
+          <h2 id="stats-title" class="text-xl font-bold">Vue d'ensemble</h2>
+          <p class="mt-1 text-sm text-slate-500">Les principaux indicateurs de l'équipe.</p>
+        </div>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p class="text-sm font-medium text-slate-500">Total employés</p>
+          <p id="total-employees" class="mt-2 text-3xl font-bold">3</p>
+        </article>
+        <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p class="text-sm font-medium text-slate-500">Salaire moyen</p>
+          <p id="average-salary" class="mt-2 text-3xl font-bold">10 000 MAD</p>
+        </article>
+        <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p class="text-sm font-medium text-slate-500">Expérience ≥ 3 ans</p>
+          <p id="experienced-employees" class="mt-2 text-3xl font-bold">2</p>
+        </article>
+        <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p class="text-sm font-medium text-slate-500">Compétences distinctes</p>
+          <p id="unique-skills-count" class="mt-2 text-3xl font-bold">5</p>
+        </article>
+      </div>
+
+      <div class="mt-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h3 class="text-sm font-semibold text-slate-700">Compétences présentes dans l'entreprise</h3>
+        <div id="unique-skills" class="mt-3 flex flex-wrap gap-2">
+          <span class="rounded-full bg-brand-50 px-3 py-1 text-sm font-medium text-brand-700">JavaScript</span>
+          <span class="rounded-full bg-brand-50 px-3 py-1 text-sm font-medium text-brand-700">React</span>
+          <span class="rounded-full bg-brand-50 px-3 py-1 text-sm font-medium text-brand-700">Node.js</span>
+          <span class="rounded-full bg-brand-50 px-3 py-1 text-sm font-medium text-brand-700">Figma</span>
+          <span class="rounded-full bg-brand-50 px-3 py-1 text-sm font-medium text-brand-700">Communication</span>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="employees-title">
+      <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="grid gap-4 md:grid-cols-[1fr_260px]">
+          <div>
+            <label for="search" class="mb-2 block text-sm font-semibold text-slate-700">Rechercher un employé</label>
+            <input id="search" name="search" type="search" placeholder="Prénom ou nom..." class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-100">
+          </div>
+          <div>
+            <label for="department-filter" class="mb-2 block text-sm font-semibold text-slate-700">Département</label>
+            <select id="department-filter" name="department" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100">
+              <option value="">Tous les départements</option>
+              <option value="Développement">Développement</option>
+              <option value="Design">Design</option>
+              <option value="Ressources humaines">Ressources humaines</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4 mt-8">
+        <h2 id="employees-title" class="text-xl font-bold">Membres de l'équipe</h2>
+        <p class="mt-1 text-sm text-slate-500">Ces cartes statiques seront remplacées par un rendu JavaScript.</p>
+      </div>
+
+      <!-- Conteneur à vider et remplir dynamiquement à l'étape 1. -->
+      <div id="employees-list" class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <article class="flex flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-sm" data-employee-id="1">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex min-w-0 items-center gap-3">
+              <div class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-100 font-bold text-brand-700">SA</div>
+              <div class="min-w-0">
+                <h3 class="truncate text-lg font-bold">Sara Alami</h3>
+                <p class="truncate text-sm text-slate-500">sara@example.com</p>
+              </div>
+            </div>
+            <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">Développement</span>
+          </div>
+          <dl class="mt-5 grid grid-cols-2 gap-3 border-y border-slate-100 py-4 text-sm">
+            <div><dt class="text-slate-500">Poste</dt><dd class="mt-1 font-semibold">Frontend Developer</dd></div>
+            <div><dt class="text-slate-500">Entreprise</dt><dd class="mt-1 font-semibold">TechSolutions</dd></div>
+            <div><dt class="text-slate-500">Expérience</dt><dd class="mt-1 font-semibold">3 ans</dd></div>
+            <div><dt class="text-slate-500">Salaire</dt><dd class="mt-1 font-semibold">9 500 MAD</dd></div>
+          </dl>
+          <div class="mt-4">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Compétences</p>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <span class="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium">JavaScript · Avancé</span>
+              <span class="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium">React · Intermédiaire</span>
+            </div>
+          </div>
+          <div class="mt-auto flex gap-3 pt-5">
+            <button type="button" class="edit-btn flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold transition hover:bg-slate-50" data-id="1">Modifier</button>
+            <button type="button" class="delete-btn flex-1 rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50" data-id="1">Supprimer</button>
+          </div>
+        </article>
+
+        <article class="flex flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-sm" data-employee-id="2">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex min-w-0 items-center gap-3">
+              <div class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-violet-100 font-bold text-violet-700">YM</div>
+              <div class="min-w-0"><h3 class="truncate text-lg font-bold">Youssef Mansouri</h3><p class="truncate text-sm text-slate-500">youssef@example.com</p></div>
+            </div>
+            <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">Développement</span>
+          </div>
+          <dl class="mt-5 grid grid-cols-2 gap-3 border-y border-slate-100 py-4 text-sm">
+            <div><dt class="text-slate-500">Poste</dt><dd class="mt-1 font-semibold">Backend Developer</dd></div>
+            <div><dt class="text-slate-500">Entreprise</dt><dd class="mt-1 font-semibold">WebCraft</dd></div>
+            <div><dt class="text-slate-500">Expérience</dt><dd class="mt-1 font-semibold">5 ans</dd></div>
+            <div><dt class="text-slate-500">Salaire</dt><dd class="mt-1 font-semibold">11 500 MAD</dd></div>
+          </dl>
+          <div class="mt-4"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Compétences</p><div class="mt-2 flex flex-wrap gap-2"><span class="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium">Node.js · Avancé</span><span class="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium">JavaScript · Avancé</span></div></div>
+          <div class="mt-auto flex gap-3 pt-5"><button type="button" class="edit-btn flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold transition hover:bg-slate-50" data-id="2">Modifier</button><button type="button" class="delete-btn flex-1 rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50" data-id="2">Supprimer</button></div>
+        </article>
+
+        <article class="flex flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-sm" data-employee-id="3">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex min-w-0 items-center gap-3">
+              <div class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-amber-100 font-bold text-amber-700">NB</div>
+              <div class="min-w-0"><h3 class="truncate text-lg font-bold">Nadia Bennani</h3><p class="truncate text-sm text-slate-500">nadia@example.com</p></div>
+            </div>
+            <span class="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">Design</span>
+          </div>
+          <dl class="mt-5 grid grid-cols-2 gap-3 border-y border-slate-100 py-4 text-sm">
+            <div><dt class="text-slate-500">Poste</dt><dd class="mt-1 font-semibold">UI/UX Designer</dd></div>
+            <div><dt class="text-slate-500">Entreprise</dt><dd class="mt-1 font-semibold">CreativeLab</dd></div>
+            <div><dt class="text-slate-500">Expérience</dt><dd class="mt-1 font-semibold">2 ans</dd></div>
+            <div><dt class="text-slate-500">Salaire</dt><dd class="mt-1 font-semibold">9 000 MAD</dd></div>
+          </dl>
+          <div class="mt-4"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Compétences</p><div class="mt-2 flex flex-wrap gap-2"><span class="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium">Figma · Avancé</span><span class="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium">Communication · Intermédiaire</span></div></div>
+          <div class="mt-auto flex gap-3 pt-5"><button type="button" class="edit-btn flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold transition hover:bg-slate-50" data-id="3">Modifier</button><button type="button" class="delete-btn flex-1 rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50" data-id="3">Supprimer</button></div>
+        </article>
+      </div>
+
+      <!-- À afficher avec JavaScript lorsqu'aucun employé ne correspond. -->
+      <div id="empty-state" class="hidden rounded-xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
+        <p class="text-lg font-semibold">Aucun employé trouvé</p>
+        <p class="mt-1 text-sm text-slate-500">Modifiez vos critères ou ajoutez un nouvel employé.</p>
+      </div>
+    </section>
+
+    <section class="scroll-mt-6" aria-labelledby="form-title">
+      <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
+          <h2 id="form-title" class="text-xl font-bold">Ajouter un employé</h2>
+          <p class="mt-1 text-sm text-slate-500">Renseignez les informations personnelles, professionnelles et les compétences.</p>
+        </div>
+
+        <form id="employee-form" class="space-y-8 p-5 sm:p-7" novalidate>
+          <input id="employee-id" name="employeeId" type="hidden">
+
+          <fieldset>
+            <legend class="mb-4 text-base font-bold">Informations personnelles</legend>
+            <div class="grid gap-5 md:grid-cols-2">
+              <div><label for="first-name" class="mb-2 block text-sm font-semibold">Prénom <span class="text-red-500">*</span></label><input id="first-name" name="firstName" type="text" autocomplete="given-name" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"><p id="first-name-error" class="mt-1 hidden text-sm text-red-600"></p></div>
+              <div><label for="last-name" class="mb-2 block text-sm font-semibold">Nom <span class="text-red-500">*</span></label><input id="last-name" name="lastName" type="text" autocomplete="family-name" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"><p id="last-name-error" class="mt-1 hidden text-sm text-red-600"></p></div>
+              <div class="md:col-span-2"><label for="email" class="mb-2 block text-sm font-semibold">Adresse e-mail <span class="text-red-500">*</span></label><input id="email" name="email" type="email" autocomplete="email" placeholder="nom@exemple.com" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"><p id="email-error" class="mt-1 hidden text-sm text-red-600"></p></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="mb-4 text-base font-bold">Informations professionnelles</legend>
+            <div class="grid gap-5 md:grid-cols-2">
+              <div><label for="department" class="mb-2 block text-sm font-semibold">Département <span class="text-red-500">*</span></label><select id="department" name="department" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"><option value="">Sélectionner...</option><option>Développement</option><option>Design</option><option>Ressources humaines</option><option>Marketing</option></select><p id="department-error" class="mt-1 hidden text-sm text-red-600"></p></div>
+              <div><label for="salary" class="mb-2 block text-sm font-semibold">Salaire mensuel (MAD) <span class="text-red-500">*</span></label><input id="salary" name="salary" type="number" min="0" step="100" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"><p id="salary-error" class="mt-1 hidden text-sm text-red-600"></p></div>
+              <div><label for="company" class="mb-2 block text-sm font-semibold">Entreprise précédente <span class="text-red-500">*</span></label><input id="company" name="company" type="text" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"><p id="company-error" class="mt-1 hidden text-sm text-red-600"></p></div>
+              <div><label for="position" class="mb-2 block text-sm font-semibold">Poste occupé <span class="text-red-500">*</span></label><input id="position" name="position" type="text" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"><p id="position-error" class="mt-1 hidden text-sm text-red-600"></p></div>
+              <div><label for="experience-years" class="mb-2 block text-sm font-semibold">Années d'expérience <span class="text-red-500">*</span></label><input id="experience-years" name="experienceYears" type="number" min="0" step="1" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"><p id="experience-years-error" class="mt-1 hidden text-sm text-red-600"></p></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <legend class="text-base font-bold">Compétences</legend>
+              <button id="add-skill-btn" type="button" class="rounded-lg border border-brand-200 px-4 py-2 text-sm font-semibold text-brand-700 transition hover:bg-brand-50">+ Ajouter une compétence</button>
+            </div>
+            <!-- Les lignes supplémentaires seront créées par les apprenants à l'étape 7. -->
+            <div id="skills-container" class="space-y-3">
+              <div class="skill-row grid gap-3 rounded-lg bg-slate-50 p-4 md:grid-cols-[1fr_220px_auto]">
+                <div><label for="skill-name-1" class="mb-2 block text-sm font-semibold">Compétence <span class="text-red-500">*</span></label><input id="skill-name-1" name="skillName[]" type="text" placeholder="Ex. JavaScript" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"></div>
+                <div><label for="skill-level-1" class="mb-2 block text-sm font-semibold">Niveau <span class="text-red-500">*</span></label><select id="skill-level-1" name="skillLevel[]" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"><option value="">Sélectionner...</option><option>Débutant</option><option>Intermédiaire</option><option>Avancé</option></select></div>
+                <button type="button" class="remove-skill-btn self-end rounded-lg border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50">Supprimer</button>
+              </div>
+            </div>
+            <p id="skills-error" class="mt-2 hidden text-sm text-red-600"></p>
+          </fieldset>
+
+          <div class="flex flex-col-reverse gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:justify-end">
+            <button id="cancel-btn" type="reset" class="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold transition hover:bg-slate-50">Annuler</button>
+            <button id="submit-btn" type="submit" class="rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">Enregistrer l'employé</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mt-8 border-t border-slate-200 bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-6 text-center text-sm text-slate-500 sm:px-6 lg:px-8">TeamManager · Starter HTML & Tailwind CSS · YouCode</div>
+  </footer>
+</body>
+</html>
